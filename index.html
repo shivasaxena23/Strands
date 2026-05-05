@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Birthday Strands</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <canvas id="confetti" class="confetti" aria-hidden="true"></canvas>
+
+    <main class="app-shell">
+      <header class="game-header">
+        <div class="title-group">
+          <svg class="gift-mark" viewBox="0 0 64 64" aria-hidden="true">
+            <rect x="10" y="25" width="44" height="31" rx="6"></rect>
+            <path d="M32 25v31M9 25h46M17 19c0-6 5-10 11-5 3 3 4 7 4 11-7 0-15 0-15-6ZM47 19c0-6-5-10-11-5-3 3-4 7-4 11 7 0 15 0 15-6Z"></path>
+          </svg>
+          <div>
+            <p id="recipient" class="recipient">For your friend</p>
+            <h1 id="title">Birthday Strands</h1>
+          </div>
+        </div>
+
+        <div class="theme-panel">
+          <span>Theme</span>
+          <strong id="theme">Make a wish</strong>
+        </div>
+      </header>
+
+      <section class="game-layout" aria-label="Birthday Strands game">
+        <section class="board-tool" aria-label="Letter board">
+          <div class="score-row">
+            <div>
+              <span>Found</span>
+              <strong id="found-count">0/0</strong>
+            </div>
+            <div>
+              <span>Spangram</span>
+              <strong id="spangram-state">Hidden</strong>
+            </div>
+          </div>
+
+          <div id="board" class="board" role="grid" aria-label="Puzzle grid"></div>
+
+          <div class="selection-row">
+            <output id="selection-output" class="selection-output" aria-live="polite"></output>
+            <div class="selection-actions">
+              <button id="clear-selection" type="button">Clear</button>
+              <button id="submit-selection" type="button" class="primary">Submit</button>
+            </div>
+          </div>
+
+          <p id="status" class="status" aria-live="polite"></p>
+        </section>
+
+        <aside class="side-panel" aria-label="Puzzle progress">
+          <div class="side-heading">
+            <h2>Words</h2>
+            <button id="hint-button" type="button">Hint</button>
+          </div>
+
+          <ol id="answer-list" class="answer-list"></ol>
+
+          <div class="side-actions">
+            <button id="reset-button" type="button">Reset</button>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <dialog id="win-dialog" class="win-dialog">
+      <form method="dialog">
+        <p class="win-kicker">Solved</p>
+        <h2 id="win-title">Happy Birthday!</h2>
+        <p id="win-message">You found every word.</p>
+        <button type="submit" class="primary">Done</button>
+      </form>
+    </dialog>
+
+    <script src="puzzle.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
