@@ -263,10 +263,13 @@ h2 {
 .cell {
   align-items: center;
   aspect-ratio: 1;
-  background: var(--tile);
+  background: linear-gradient(170deg, #ffffff 40%, #f3ede4);
   border: 2px solid var(--tile-border);
-  border-radius: 8px;
-  box-shadow: 0 7px 0 rgba(16, 38, 41, 0.08);
+  border-radius: 10px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 4px 0 #ccc4b5,
+    0 6px 14px rgba(16, 38, 41, 0.09);
   color: var(--ink);
   display: flex;
   font-size: 1.15rem;
@@ -277,16 +280,25 @@ h2 {
   min-width: 0;
   padding: 0;
   position: relative;
+  transition: box-shadow 0.12s, border-color 0.12s;
   user-select: none;
 }
 
 .cell:hover {
-  border-color: #97aba6;
+  border-color: #7fa09a;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 4px 0 #ccc4b5,
+    0 8px 18px rgba(16, 38, 41, 0.14);
 }
 
 .cell.selected {
-  background: var(--selected);
-  border-color: #b8860b;
+  background: linear-gradient(170deg, #fdd84e 40%, #f4be2a);
+  border-color: #c49a12;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 4px 0 #a87e0c,
+    0 6px 14px rgba(16, 38, 41, 0.14);
 }
 
 .cell.answer-colored {
@@ -300,14 +312,22 @@ h2 {
 }
 
 .cell.found {
-  background: var(--found);
-  border-color: #173ea6;
+  background: linear-gradient(170deg, #2563eb 40%, #1d4ed8);
+  border-color: #1339a8;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 4px 0 #1133a0,
+    0 6px 14px rgba(16, 38, 41, 0.18);
   color: #ffffff;
 }
 
 .cell.spangram {
-  background: var(--spangram);
-  border-color: #b73630;
+  background: linear-gradient(170deg, #f06b62 40%, #e85d54);
+  border-color: #b83c34;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 4px 0 #a8322a,
+    0 6px 14px rgba(16, 38, 41, 0.18);
   color: #ffffff;
 }
 
@@ -669,7 +689,10 @@ body.color-mode .answer-swatch {
 
   .cell {
     border-width: 1px;
-    box-shadow: 0 4px 0 rgba(16, 38, 41, 0.08);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.9),
+      0 3px 0 #ccc4b5,
+      0 4px 8px rgba(16, 38, 41, 0.09);
     font-size: 0.72rem;
   }
 
