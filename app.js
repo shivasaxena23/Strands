@@ -281,9 +281,17 @@
 
   function setHeaderText() {
     document.title = puzzleData.title || "Birthday Strands";
-    document.getElementById("title").textContent = puzzleData.title || "Birthday Strands";
-    document.getElementById("win-title").textContent = puzzleData.winTitle || "Happy Birthday!";
-    document.getElementById("win-message").textContent = puzzleData.winMessage || "You found every word.";
+    setText("title", puzzleData.title || "Birthday Strands");
+    setText("win-title", puzzleData.winTitle || "Happy Birthday!");
+    setText("win-message", puzzleData.winMessage || "You found every word.");
+  }
+
+  function setText(id, text) {
+    const element = document.getElementById(id);
+
+    if (element) {
+      element.textContent = text;
+    }
   }
 
   function renderBoard() {
