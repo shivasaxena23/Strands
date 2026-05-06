@@ -25,6 +25,7 @@
   let state = puzzleStates[activePuzzleIndex];
   let colorModeEnabled = false;
   let clipTimer = null;
+  let lastDragCell = null;
 
   const cellsByKey = new Map();
   const answerByCell = new Map();
@@ -777,6 +778,7 @@
       event.preventDefault();
       state.dragging = true;
       state.dragMoved = false;
+      lastDragCell = cell;
       boardEl.setPointerCapture(event.pointerId);
       handleCellInput(cell);
     });
@@ -793,6 +795,11 @@
         return;
       }
 
+      if (cell === lastDragCell) {
+        return;
+      }
+
+      lastDragCell = cell;
       const changed = handleCellInput(cell, { restartOnNonAdjacent: false });
       state.dragMoved = state.dragMoved || changed;
     });
@@ -803,6 +810,7 @@
       }
 
       state.dragging = false;
+      lastDragCell = null;
       boardEl.releasePointerCapture(event.pointerId);
 
       if (state.dragMoved && state.selected.length > 1) {
@@ -812,6 +820,7 @@
 
     boardEl.addEventListener("pointercancel", () => {
       state.dragging = false;
+      lastDragCell = null;
     });
 
     document.getElementById("submit-selection").addEventListener("click", submitSelection);
