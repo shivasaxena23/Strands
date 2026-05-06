@@ -690,7 +690,7 @@
     } else if (nextPuzzleIndex !== -1) {
       const nextTheme = puzzles[nextPuzzleIndex].theme || puzzles[nextPuzzleIndex].label || `Level ${nextPuzzleIndex + 1}`;
       document.getElementById("win-title").textContent = "Level Complete";
-      document.getElementById("win-message").textContent = "Continue to the next puzzle.";
+      document.getElementById("win-message").textContent = "";
       winActionEl.textContent = `Continue to ${nextTheme}`;
       winDialog.dataset.nextPuzzleIndex = String(nextPuzzleIndex);
     } else {
