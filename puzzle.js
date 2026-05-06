@@ -13,7 +13,7 @@ window.BIRTHDAY_STRANDS_PUZZLE = {
       "label": "Theme: Shelf to Screen",
       "theme": "Shelf to Screen",
       "clip": {
-        "src": "https://media1.tenor.com/m/1A5aUPJKlvcAAAAd/shin-chan-dance.gif",
+        "src": "https://media1.tenor.com/m/bst15QxLpp8AAAAd/shin-chan.gif",
         "durationMs": 3000,
         "type": "image",
         "label": "show Shinchan dancing",
