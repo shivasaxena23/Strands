@@ -563,7 +563,8 @@
     }
 
     if (samePoint(lastPoint, point)) {
-      return false;
+      state.selected.pop();
+      return true;
     }
 
     if (previousPoint && samePoint(previousPoint, point)) {
@@ -596,6 +597,7 @@
       statusEl.textContent = "";
       renderSelection();
       renderCells();
+      submitSelectionIfComplete();
     }
 
     return changed;
@@ -642,6 +644,25 @@
     }
   }
 
+  function submitSelectionIfComplete() {
+    const answerIndex = findSelectedAnswer();
+
+    if (answerIndex === -1) {
+      return false;
+    }
+
+    state.found.add(answerIndex);
+    state.hinted.delete(answerIndex);
+    clearSelection(`${getDisplayWord(puzzle.answers[answerIndex])} found.`);
+    render();
+
+    if (state.found.size === puzzle.answers.length) {
+      window.setTimeout(showWin, 250);
+    }
+
+    return true;
+  }
+
   function showHint() {
     statusEl.textContent = "";
     showMediaPopup(getHintClipConfig(), { clearSelection: false });
@@ -666,9 +687,10 @@
       document.getElementById("win-message").textContent = puzzleData.winMessage || "You solved every level.";
       winActionEl.textContent = "Done";
     } else if (nextPuzzleIndex !== -1) {
-      document.getElementById("win-title").textContent = "Key Found";
-      document.getElementById("win-message").textContent = "Puzzle 2 is unlocked.";
-      winActionEl.textContent = "Open Level 2";
+      const nextTheme = puzzles[nextPuzzleIndex].theme || puzzles[nextPuzzleIndex].label || `Level ${nextPuzzleIndex + 1}`;
+      document.getElementById("win-title").textContent = "Level Complete";
+      document.getElementById("win-message").textContent = "Continue to the next puzzle.";
+      winActionEl.textContent = `Continue to ${nextTheme}`;
       winDialog.dataset.nextPuzzleIndex = String(nextPuzzleIndex);
     } else {
       document.getElementById("win-title").textContent = `${puzzle.label || "Level"} solved`;

@@ -13,7 +13,7 @@ window.BIRTHDAY_STRANDS_PUZZLE = {
       "label": "Theme: Shelf to Screen",
       "theme": "Shelf to Screen",
       "clip": {
-        "src": "assets/shinchan-dance.svg",
+        "src": "https://media1.tenor.com/m/1A5aUPJKlvcAAAAd/shin-chan-dance.gif",
         "durationMs": 3000,
         "type": "image",
         "label": "show Shinchan dancing",
@@ -60,7 +60,7 @@ window.BIRTHDAY_STRANDS_PUZZLE = {
         },
         {
           "word": "Veer Zaara",
-          "color": "#be123c",
+          "color": "#e11d48",
           "path": [[5, 1], [6, 1], [7, 1], [8, 1], [9, 1], [9, 2], [9, 3], [9, 4], [9, 5]]
         },
         {
@@ -70,7 +70,7 @@ window.BIRTHDAY_STRANDS_PUZZLE = {
         },
         {
           "word": "Atonement",
-          "color": "#9f1239",
+          "color": "#4f46e5",
           "path": [[9, 6], [9, 7], [9, 8], [9, 9], [9, 10], [8, 10], [7, 10], [6, 10], [5, 10]]
         },
         {
@@ -87,8 +87,8 @@ window.BIRTHDAY_STRANDS_PUZZLE = {
       ]
     },
     {
-      "label": "Theme: Thing Things and Spiced Fungi",
-      "theme": "Thing Things and Spiced Fungi",
+      "label": "Theme: Thing Things and Vegan Dream",
+      "theme": "Thing Things and Vegan Dream",
       "grid": [
         "SRSNOCAERUQ",
         "HENOOCRLRIS",
@@ -215,7 +215,7 @@ window.BIRTHDAY_STRANDS_PUZZLE = {
         },
         {
           "word": "Saying Things",
-          "color": "#6d28d9",
+          "color": "#f97316",
           "path": [
             [
               2,
@@ -369,7 +369,7 @@ window.BIRTHDAY_STRANDS_PUZZLE = {
         },
         {
           "word": "Feathers",
-          "color": "#a16207",
+          "color": "#0ea5e9",
           "path": [
             [
               4,
@@ -449,7 +449,7 @@ window.BIRTHDAY_STRANDS_PUZZLE = {
         },
         {
           "word": "Chilli Oil",
-          "color": "#ea580c",
+          "color": "#eab308",
           "path": [
             [
               6,

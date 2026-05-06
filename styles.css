@@ -37,15 +37,19 @@ body {
 }
 
 body::after {
-  background: url("assets/flower-bed.svg") bottom center / min(1180px, 150vw) auto repeat-x;
+  background:
+    linear-gradient(180deg, rgba(247, 244, 238, 0), rgba(247, 244, 238, 0.12) 42%, rgba(247, 244, 238, 0.3)),
+    url("https://cdn.pixabay.com/photo/2018/05/09/20/19/wild-flower-meadow-3386078_1280.jpg") center bottom / cover no-repeat;
   bottom: 0;
   content: "";
-  height: 210px;
+  height: clamp(220px, 30vh, 340px);
   left: 0;
-  opacity: 0.94;
+  opacity: 0.84;
   pointer-events: none;
   position: fixed;
   right: 0;
+  -webkit-mask-image: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.55) 28%, #000 58%);
+  mask-image: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.55) 28%, #000 58%);
   z-index: 0;
 }
 
