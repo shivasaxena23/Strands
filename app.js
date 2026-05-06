@@ -809,16 +809,23 @@
     }
     if (colorModeToggleEl) {
       colorModeToggleEl.addEventListener("change", () => {
-        colorModeEnabled = colorModeToggleEl.checked;
-        document.body.classList.toggle("color-mode", colorModeEnabled);
+        setColorMode(colorModeToggleEl.checked);
         render();
       });
     }
     window.addEventListener("resize", resizeConfettiCanvas);
   }
 
+  function setColorMode(enabled) {
+    colorModeEnabled = enabled;
+    document.body.classList.toggle("color-mode", colorModeEnabled);
+  }
+
   function init() {
     puzzles.forEach(validatePuzzle);
+    if (colorModeToggleEl) {
+      setColorMode(colorModeToggleEl.checked);
+    }
     setHeaderText();
     renderBoard();
     bindEvents();

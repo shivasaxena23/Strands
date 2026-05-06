@@ -327,8 +327,10 @@ body.color-mode .cell.answer-colored.spangram {
 }
 
 .cell.hinted:not(.found):not(.selected) {
+  background: #efe7ff;
   border-color: var(--hint);
-  box-shadow: 0 0 0 4px rgba(138, 103, 208, 0.16), 0 7px 0 rgba(16, 38, 41, 0.08);
+  box-shadow: 0 0 0 5px rgba(138, 103, 208, 0.26), 0 7px 0 rgba(16, 38, 41, 0.08);
+  color: #3b1d73;
 }
 
 .cell.filler {
