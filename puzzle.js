@@ -1,6 +1,5 @@
 window.BIRTHDAY_STRANDS_PUZZLE = {
   "title": "Birthday Strands",
-  "recipient": "For your friend",
   "theme": "Favorite things",
   "winTitle": "Happy Birthday!",
   "winMessage": "You solved every level.",

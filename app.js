@@ -282,8 +282,6 @@
   function setHeaderText() {
     document.title = puzzleData.title || "Birthday Strands";
     document.getElementById("title").textContent = puzzleData.title || "Birthday Strands";
-    document.getElementById("recipient").textContent = puzzleData.recipient || "For your friend";
-    document.getElementById("theme").textContent = puzzle.theme || puzzleData.theme || "Make a wish";
     document.getElementById("win-title").textContent = puzzleData.winTitle || "Happy Birthday!";
     document.getElementById("win-message").textContent = puzzleData.winMessage || "You found every word.";
   }
@@ -631,16 +629,7 @@
   }
 
   function showHint() {
-    const answerIndex = puzzle.answers.findIndex((answer, index) => !state.found.has(index));
-
-    if (answerIndex === -1) {
-      statusEl.textContent = "Every word is found.";
-      return;
-    }
-
-    state.hinted.add(answerIndex);
-    statusEl.textContent = puzzle.answers[answerIndex].kind === "spangram" ? "Spangram highlighted." : "A word is highlighted.";
-    renderCells();
+    statusEl.textContent = "";
     showMediaPopup(getHintClipConfig(), { clearSelection: false });
   }
 
