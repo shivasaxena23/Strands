@@ -11,7 +11,7 @@ window.BIRTHDAY_STRANDS_PUZZLE = {
   },
   "puzzles": [
     {
-      "label": "Level 1 - Film/TV + Literature",
+      "label": "Theme: Shelf to Screen",
       "theme": "Shelf to Screen",
       "clip": {
         "src": "assets/shinchan-dance.svg",
@@ -88,7 +88,7 @@ window.BIRTHDAY_STRANDS_PUZZLE = {
       ]
     },
     {
-      "label": "Level 2 - Other Favorites",
+      "label": "Theme: Things Things and Spiced Fungi",
       "theme": "Things Things and Spiced Fungi",
       "grid": [
         "SRSNOCAERUQ",

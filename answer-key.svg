@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="1008" height="1210" viewBox="0 0 1008 1210">
 <rect width="100%" height="100%" fill="#f7f4ee"/>
-<text x="34" y="68" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="24" font-weight="900" fill="#102629">Level 1 - Film/TV + Literature</text>
+<text x="34" y="68" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="24" font-weight="900" fill="#102629">Theme: Shelf to Screen</text>
 <text x="34" y="92" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#5d6a66">Shelf to Screen. Rows and columns start at 1.</text>
 <text x="77" y="106" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="800" fill="#5d6a66">1</text>
 <text x="119" y="106" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="800" fill="#5d6a66">2</text>
@@ -287,7 +287,7 @@
 <text x="602" y="339" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="800" fill="#102629">Pride and Prejudice</text>
 <rect x="574" y="356" width="18" height="18" rx="4" fill="#f97316" stroke="#102629" stroke-width="2"/>
 <text x="602" y="370" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="800" fill="#102629">Spangram - Breakfast At Tiffanys</text>
-<text x="34" y="706" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="24" font-weight="900" fill="#102629">Level 2 - Other Favorites</text>
+<text x="34" y="706" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="24" font-weight="900" fill="#102629">Theme: Things Things and Spiced Fungi</text>
 <text x="34" y="730" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700" fill="#5d6a66">Things Things and Spiced Fungi. Rows and columns start at 1.</text>
 <text x="77" y="744" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="800" fill="#5d6a66">1</text>
 <text x="119" y="744" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="800" fill="#5d6a66">2</text>
