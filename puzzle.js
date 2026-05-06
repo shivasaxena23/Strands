@@ -33,7 +33,7 @@ window.BIRTHDAY_STRANDS_PUZZLE = {
         "ATANWODECID",
         "SOMEPREAPRU",
         "TNENTIDNDEJ",
-        "ATTIFFANYS?"
+        "ATTIFFINAYS"
       ],
       "answers": [
         {
