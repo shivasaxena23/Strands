@@ -87,8 +87,8 @@ window.BIRTHDAY_STRANDS_PUZZLE = {
       ]
     },
     {
-      "label": "Theme: Things Things and Spiced Fungi",
-      "theme": "Things Things and Spiced Fungi",
+      "label": "Theme: Thing Things and Spiced Fungi",
+      "theme": "Thing Things and Spiced Fungi",
       "grid": [
         "SRSNOCAERUQ",
         "HENOOCRLRIS",

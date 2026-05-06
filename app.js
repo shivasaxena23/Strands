@@ -62,7 +62,7 @@
   function isAdjacent(a, b) {
     const rowDelta = Math.abs(a[0] - b[0]);
     const colDelta = Math.abs(a[1] - b[1]);
-    return rowDelta <= 1 && colDelta <= 1 && rowDelta + colDelta > 0;
+    return rowDelta + colDelta === 1;
   }
 
   function getLettersForPath(path, targetPuzzle = puzzle) {
@@ -547,7 +547,9 @@
     state.selected = state.selected.slice(0, selectedIndex + 1);
   }
 
-  function addPoint(point) {
+  function addPoint(point, options = {}) {
+    const restartOnNonAdjacent = options.restartOnNonAdjacent !== false;
+
     if (isCellFound(point)) {
       return false;
     }
@@ -575,6 +577,10 @@
     }
 
     if (!isAdjacent(lastPoint, point)) {
+      if (!restartOnNonAdjacent) {
+        return false;
+      }
+
       state.selected = [point];
       return true;
     }
@@ -583,8 +589,8 @@
     return true;
   }
 
-  function handleCellInput(cell) {
-    const changed = addPoint(pointFromCell(cell));
+  function handleCellInput(cell, options = {}) {
+    const changed = addPoint(pointFromCell(cell), options);
 
     if (changed) {
       statusEl.textContent = "";
@@ -765,7 +771,7 @@
         return;
       }
 
-      const changed = handleCellInput(cell);
+      const changed = handleCellInput(cell, { restartOnNonAdjacent: false });
       state.dragMoved = state.dragMoved || changed;
     });
 
