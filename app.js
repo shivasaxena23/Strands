@@ -480,7 +480,7 @@
       cell.classList.toggle("found", isFound && !isSpangram);
       cell.classList.toggle("spangram", isSpangram);
       cell.classList.toggle("selected", isSelected);
-      cell.classList.toggle("answer-colored", colorModeEnabled && isSelected && !isFiller);
+      cell.classList.toggle("answer-colored", colorModeEnabled && (isSelected || isFound) && !isFiller);
       cell.classList.toggle("hinted", isHinted);
       cell.classList.toggle("clip-trigger", Boolean(isClipTrigger));
       if (isClipTrigger) {

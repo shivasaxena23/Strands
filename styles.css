@@ -319,6 +319,13 @@ h2 {
   color: #ffffff;
 }
 
+body.color-mode .cell.answer-colored.found,
+body.color-mode .cell.answer-colored.spangram {
+  background: var(--answer-color);
+  border-color: var(--answer-color);
+  color: var(--answer-text-color);
+}
+
 .cell.hinted:not(.found):not(.selected) {
   border-color: var(--hint);
   box-shadow: 0 0 0 4px rgba(138, 103, 208, 0.16), 0 7px 0 rgba(16, 38, 41, 0.08);
