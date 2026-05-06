@@ -17,6 +17,7 @@
   const winActionEl = document.getElementById("win-action");
   const clipDialog = document.getElementById("clip-dialog");
   const clipVideoEl = document.getElementById("clip-video");
+  const clipImageEl = document.getElementById("clip-image");
   const confettiCanvas = document.getElementById("confetti");
   const confettiContext = confettiCanvas.getContext("2d");
 
@@ -109,6 +110,14 @@
     return puzzle.clip || null;
   }
 
+  function getHintClipConfig() {
+    return puzzle.hintClip || puzzleData.hintClip || null;
+  }
+
+  function isImageClip(clip) {
+    return clip.type === "image" || /\.(gif|jpe?g|png|svg|webp)$/i.test(clip.src || "");
+  }
+
   function getClipCells() {
     const clip = getClipConfig();
 
@@ -136,16 +145,23 @@
   }
 
   function stopClipPlayback() {
-    if (!clipVideoEl) {
-      return;
+    if (clipVideoEl) {
+      clipVideoEl.pause();
+
+      try {
+        clipVideoEl.currentTime = 0;
+      } catch (error) {
+        // Some browsers block seeking before metadata is available.
+      }
     }
 
-    clipVideoEl.pause();
+    if (clipImageEl) {
+      clipImageEl.removeAttribute("src");
+      clipImageEl.alt = "";
+    }
 
-    try {
-      clipVideoEl.currentTime = 0;
-    } catch (error) {
-      // Some browsers block seeking before metadata is available.
+    if (clipDialog) {
+      clipDialog.classList.remove("is-video", "is-image");
     }
   }
 
@@ -165,26 +181,46 @@
     }
   }
 
-  function showClipPopup() {
-    const clip = getClipConfig();
-
-    if (!clip || !clipDialog || !clipVideoEl) {
+  function showMediaPopup(clip, options = {}) {
+    if (!clip || !clipDialog) {
       return;
     }
 
     window.clearTimeout(clipTimer);
     state.dragging = false;
-    clearSelection("");
+    stopClipPlayback();
 
-    if (clipVideoEl.getAttribute("src") !== clip.src) {
-      clipVideoEl.setAttribute("src", clip.src);
-      clipVideoEl.load();
+    if (options.clearSelection !== false) {
+      clearSelection("");
     }
 
-    try {
-      clipVideoEl.currentTime = 0;
-    } catch (error) {
-      // The video will still start from the beginning after load.
+    const showImage = isImageClip(clip);
+
+    if (showImage) {
+      if (!clipImageEl) {
+        return;
+      }
+
+      clipDialog.classList.add("is-image");
+      clipImageEl.src = clip.src;
+      clipImageEl.alt = clip.alt || clip.label || "Popup image";
+    } else {
+      if (!clipVideoEl) {
+        return;
+      }
+
+      clipDialog.classList.add("is-video");
+
+      if (clipVideoEl.getAttribute("src") !== clip.src) {
+        clipVideoEl.setAttribute("src", clip.src);
+        clipVideoEl.load();
+      }
+
+      try {
+        clipVideoEl.currentTime = 0;
+      } catch (error) {
+        // The video will still start from the beginning after load.
+      }
     }
 
     if (!clipDialog.open) {
@@ -195,13 +231,19 @@
       }
     }
 
-    const playPromise = clipVideoEl.play();
+    if (!showImage) {
+      const playPromise = clipVideoEl.play();
 
-    if (playPromise && typeof playPromise.catch === "function") {
-      playPromise.catch(() => {});
+      if (playPromise && typeof playPromise.catch === "function") {
+        playPromise.catch(() => {});
+      }
     }
 
     clipTimer = window.setTimeout(closeClipPopup, Number(clip.durationMs) || 3000);
+  }
+
+  function showClipPopup() {
+    showMediaPopup(getClipConfig());
   }
 
   function validatePuzzle(targetPuzzle) {
@@ -444,7 +486,8 @@
       if (isClipTrigger) {
         const rowNumber = Number(cell.dataset.row) + 1;
         const colNumber = Number(cell.dataset.col) + 1;
-        cell.setAttribute("aria-label", `Row ${rowNumber}, column ${colNumber}, ${cell.textContent}, play birthday clip`);
+        const clipLabel = getClipConfig().label || "open birthday popup";
+        cell.setAttribute("aria-label", `Row ${rowNumber}, column ${colNumber}, ${cell.textContent}, ${clipLabel}`);
       }
       cell.classList.toggle("filler", isFiller && !isClipTrigger);
       cell.disabled = isFound || (isFiller && !isClipTrigger);
@@ -598,6 +641,7 @@
     state.hinted.add(answerIndex);
     statusEl.textContent = puzzle.answers[answerIndex].kind === "spangram" ? "Spangram highlighted." : "A word is highlighted.";
     renderCells();
+    showMediaPopup(getHintClipConfig(), { clearSelection: false });
   }
 
   function resetGame() {

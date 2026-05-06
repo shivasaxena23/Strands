@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 520" role="img" aria-label="Shinchan dancing">
+  <style>
+    @keyframes bounce {
+      0% { transform: translate(0, 0) rotate(-2deg); }
+      100% { transform: translate(0, -18px) rotate(2deg); }
+    }
+
+    @keyframes arm-left {
+      0% { transform: rotate(-20deg); }
+      100% { transform: rotate(25deg); }
+    }
+
+    @keyframes arm-right {
+      0% { transform: rotate(28deg); }
+      100% { transform: rotate(-20deg); }
+    }
+
+    @keyframes leg-left {
+      0% { transform: rotate(10deg); }
+      100% { transform: rotate(-18deg); }
+    }
+
+    @keyframes leg-right {
+      0% { transform: rotate(-12deg); }
+      100% { transform: rotate(18deg); }
+    }
+
+    @keyframes float-note {
+      0% { opacity: 0; transform: translateY(20px) scale(0.9); }
+      35% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(-70px) scale(1.2); }
+    }
+
+    #kid {
+      animation: bounce 0.55s ease-in-out infinite alternate;
+      transform-box: fill-box;
+      transform-origin: 50% 100%;
+    }
+
+    #left-arm {
+      animation: arm-left 0.55s ease-in-out infinite alternate;
+      transform-box: fill-box;
+      transform-origin: 95% 10%;
+    }
+
+    #right-arm {
+      animation: arm-right 0.55s ease-in-out infinite alternate;
+      transform-box: fill-box;
+      transform-origin: 5% 10%;
+    }
+
+    #left-leg {
+      animation: leg-left 0.55s ease-in-out infinite alternate;
+      transform-box: fill-box;
+      transform-origin: 50% 0%;
+    }
+
+    #right-leg {
+      animation: leg-right 0.55s ease-in-out infinite alternate;
+      transform-box: fill-box;
+      transform-origin: 50% 0%;
+    }
+
+    .note {
+      animation: float-note 1.25s ease-in infinite;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+
+    .note.two { animation-delay: 0.35s; }
+    .note.three { animation-delay: 0.7s; }
+  </style>
+
+  <rect width="520" height="520" rx="34" fill="#fff7df"/>
+  <circle cx="84" cy="88" r="34" fill="#f7c948" opacity="0.65"/>
+  <circle cx="438" cy="106" r="48" fill="#8fd6cf" opacity="0.46"/>
+  <circle cx="430" cy="408" r="66" fill="#f59ab3" opacity="0.3"/>
+  <path d="M76 418c70 38 298 39 372 0" fill="none" stroke="#e1d5bd" stroke-width="18" stroke-linecap="round"/>
+
+  <g class="note" fill="#e85d54">
+    <path d="M96 226v-70h16v53c9-5 22-3 29 5 8 10 3 24-11 30-16 7-34-1-34-18Z"/>
+    <rect x="109" y="151" width="42" height="10" rx="5"/>
+  </g>
+  <g class="note two" fill="#3f9b92">
+    <path d="M408 246v-78h15v59c9-5 22-4 29 5 8 10 3 24-11 30-16 7-33-1-33-16Z"/>
+    <rect x="421" y="164" width="40" height="10" rx="5"/>
+  </g>
+  <g class="note three" fill="#8a67d0">
+    <path d="M372 126v-62h14v47c8-4 19-3 25 5 7 9 3 21-9 26-14 6-30-1-30-16Z"/>
+  </g>
+
+  <g id="kid">
+    <g id="left-leg">
+      <path d="M224 342c-15 25-27 53-31 82" fill="none" stroke="#f2c59d" stroke-width="30" stroke-linecap="round"/>
+      <path d="M178 431h55" fill="none" stroke="#102629" stroke-width="20" stroke-linecap="round"/>
+    </g>
+    <g id="right-leg">
+      <path d="M295 342c17 25 29 53 33 82" fill="none" stroke="#f2c59d" stroke-width="30" stroke-linecap="round"/>
+      <path d="M297 431h55" fill="none" stroke="#102629" stroke-width="20" stroke-linecap="round"/>
+    </g>
+
+    <path d="M205 286c9-43 99-43 108 0l12 62c3 17-10 33-28 33h-75c-18 0-31-16-28-33Z" fill="#e85d54"/>
+    <path d="M211 371h96v36c0 13-11 24-24 24h-48c-13 0-24-11-24-24Z" fill="#f7c948"/>
+
+    <g id="left-arm">
+      <path d="M209 298c-35 5-62 24-81 55" fill="none" stroke="#f2c59d" stroke-width="24" stroke-linecap="round"/>
+      <circle cx="122" cy="360" r="14" fill="#f2c59d"/>
+    </g>
+    <g id="right-arm">
+      <path d="M310 298c35 5 62 24 81 55" fill="none" stroke="#f2c59d" stroke-width="24" stroke-linecap="round"/>
+      <circle cx="397" cy="360" r="14" fill="#f2c59d"/>
+    </g>
+
+    <ellipse cx="260" cy="214" rx="82" ry="73" fill="#f2c59d"/>
+    <path d="M184 207c6-62 38-101 86-101 51 0 83 41 84 101-27-27-132-27-170 0Z" fill="#102629"/>
+    <path d="M205 199c17-13 36-14 55-1" fill="none" stroke="#102629" stroke-width="9" stroke-linecap="round"/>
+    <path d="M271 198c20-13 40-13 57 0" fill="none" stroke="#102629" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="230" cy="224" r="8" fill="#102629"/>
+    <circle cx="294" cy="224" r="8" fill="#102629"/>
+    <circle cx="198" cy="244" r="17" fill="#f59ab3" opacity="0.85"/>
+    <circle cx="326" cy="244" r="17" fill="#f59ab3" opacity="0.85"/>
+    <path d="M242 257c13 10 30 10 43 0" fill="none" stroke="#102629" stroke-width="8" stroke-linecap="round"/>
+  </g>
+</svg>

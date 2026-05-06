@@ -15,13 +15,13 @@ Edit `puzzle.js`.
 - `puzzles`: the separate playable levels.
 - each puzzle's `label`, `theme`, `grid`, and `answers`: the visible board and hidden answers for that level.
 - each answer can include a `color` hex value used by Color mode and the answer-key images.
-- a puzzle can include `clip` with `cells`, `src`, and `durationMs` to make one or more tiles play a short popup video.
-- each puzzle's `spangram` answer should connect two opposite grid edges.
+- a puzzle can include `clip` with `cells`, `src`, `type`, and `durationMs` to make one or more tiles open a short popup.
+- each puzzle's `spangram` answer should connect or run along major grid edges.
 - Level 2 stays locked until Level 1 is solved.
 
 Each answer path is a list of `[row, column]` cells, starting from zero. The letters at those cells must spell the answer exactly.
 Do not reuse a cell across two answers.
-Level 1 has two video-trigger filler tiles. Level 2 has no filler tiles.
+Level 1 has one popup-trigger filler tile. Level 2 has no filler tiles.
 
 For example, this path reads across the first row:
 

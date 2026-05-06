@@ -4,7 +4,7 @@ Add-Type -AssemblyName System.Drawing
 
 $sourcePath = Join-Path $PSScriptRoot "puzzle.js"
 $outputPath = Join-Path $PSScriptRoot "answer-key.png"
-$content = Get-Content -Raw $sourcePath
+$content = Get-Content -Raw -Encoding UTF8 $sourcePath
 $jsonMatch = [regex]::Match($content, 'window\.BIRTHDAY_STRANDS_PUZZLE\s*=\s*(\{[\s\S]*\});\s*$')
 
 if (-not $jsonMatch.Success) {
@@ -188,7 +188,7 @@ foreach ($block in $blocks) {
   $top = $block.Y + $blockTop
   $legendX = $block.LegendX
   $legendY = $top + 2
-  $note = if ($info.ClipCellCount -gt 1 -and $info.ClipCellCount -eq $info.FillerCellCount) { "Question marks are video triggers." } elseif ($info.ClipCellCount -gt 0 -and $info.FillerCellCount -gt $info.ClipCellCount) { "Grey tiles include video triggers and disabled filler." } elseif ($info.ClipCellCount -eq 1) { "Question mark is the video trigger." } elseif ($info.FillerCellCount -gt 1) { "Grey tiles are disabled filler." } elseif ($info.FillerCellCount -eq 1) { "Grey tile is disabled filler." } else { "Every tile belongs to an answer." }
+  $note = if ($info.ClipCellCount -gt 1 -and $info.ClipCellCount -eq $info.FillerCellCount) { "Flower tiles are popup triggers." } elseif ($info.ClipCellCount -gt 0 -and $info.FillerCellCount -gt $info.ClipCellCount) { "Grey tiles include popup triggers and disabled filler." } elseif ($info.ClipCellCount -eq 1) { "Flower tile is the popup trigger." } elseif ($info.FillerCellCount -gt 1) { "Grey tiles are disabled filler." } elseif ($info.FillerCellCount -eq 1) { "Grey tile is disabled filler." } else { "Every tile belongs to an answer." }
 
   $graphics.DrawString($info.Label, $titleFont, $inkBrush, 34, $block.Y + 10)
   $graphics.DrawString("$($info.Theme). Rows and columns start at 1.", $subtitleFont, $mutedBrush, 34, $block.Y + 42)
