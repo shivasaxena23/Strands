@@ -54,23 +54,27 @@ body::after {
 }
 
 button {
+  background: linear-gradient(180deg, #ffffff, #f0ebe1);
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: #ffffff;
+  box-shadow: 0 1px 0 #cbc4b7, 0 2px 6px rgba(16, 38, 41, 0.07);
   color: var(--ink);
   cursor: pointer;
   font: inherit;
   font-weight: 750;
   min-height: 42px;
-  padding: 0 14px;
+  padding: 0 16px;
+  transition: box-shadow 0.14s, transform 0.14s;
 }
 
 button:hover {
   border-color: #9fb5af;
+  box-shadow: 0 1px 0 #cbc4b7, 0 5px 14px rgba(16, 38, 41, 0.13);
   transform: translateY(-1px);
 }
 
 button:active {
+  box-shadow: inset 0 1px 4px rgba(16, 38, 41, 0.1);
   transform: translateY(0);
 }
 
@@ -81,9 +85,19 @@ button:focus-visible,
 }
 
 .primary {
-  background: var(--ink);
-  border-color: var(--ink);
+  background: linear-gradient(180deg, #1d3d41, var(--ink));
+  border-color: #091c1f;
+  box-shadow: 0 1px 0 #071517, 0 2px 8px rgba(16, 38, 41, 0.28);
   color: #ffffff;
+}
+
+.primary:hover {
+  border-color: #091c1f;
+  box-shadow: 0 1px 0 #071517, 0 5px 16px rgba(16, 38, 41, 0.35);
+}
+
+.primary:active {
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
 .confetti {
