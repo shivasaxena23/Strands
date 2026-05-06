@@ -685,7 +685,7 @@
 
     if (allSolved) {
       document.getElementById("win-title").textContent = puzzleData.winTitle || "Happy Birthday!";
-      document.getElementById("win-message").textContent = puzzleData.winMessage || "You solved every level.";
+      document.getElementById("win-message").textContent = "";
       winActionEl.textContent = "Done";
     } else if (nextPuzzleIndex !== -1) {
       const nextTheme = puzzles[nextPuzzleIndex].theme || puzzles[nextPuzzleIndex].label || `Level ${nextPuzzleIndex + 1}`;
