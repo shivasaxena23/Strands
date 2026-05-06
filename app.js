@@ -1,27 +1,46 @@
 (function () {
   "use strict";
 
-  const puzzle = window.BIRTHDAY_STRANDS_PUZZLE;
+  const puzzleData = window.BIRTHDAY_STRANDS_PUZZLE;
+  const puzzles = Array.isArray(puzzleData.puzzles) ? puzzleData.puzzles : [puzzleData];
+  let activePuzzleIndex = 0;
+  let puzzle = puzzles[activePuzzleIndex];
   const boardEl = document.getElementById("board");
+  const levelTabsEl = document.getElementById("level-tabs");
   const answerListEl = document.getElementById("answer-list");
+  const colorModeToggleEl = document.getElementById("color-mode-toggle");
   const selectionOutputEl = document.getElementById("selection-output");
   const foundCountEl = document.getElementById("found-count");
   const spangramStateEl = document.getElementById("spangram-state");
   const statusEl = document.getElementById("status");
   const winDialog = document.getElementById("win-dialog");
+  const winActionEl = document.getElementById("win-action");
+  const clipDialog = document.getElementById("clip-dialog");
+  const clipVideoEl = document.getElementById("clip-video");
   const confettiCanvas = document.getElementById("confetti");
   const confettiContext = confettiCanvas.getContext("2d");
 
-  const state = {
-    selected: [],
-    found: new Set(),
-    hinted: new Set(),
-    dragging: false,
-    dragMoved: false
-  };
+  const puzzleStates = puzzles.map(createState);
+  let state = puzzleStates[activePuzzleIndex];
+  let colorModeEnabled = false;
+  let clipTimer = null;
 
   const cellsByKey = new Map();
   const answerByCell = new Map();
+  const fallbackColors = [
+    "#c2410c", "#2563eb", "#db2777", "#16a34a", "#7c3aed", "#ca8a04",
+    "#0891b2", "#be123c", "#4d7c0f", "#9333ea", "#0f766e", "#b45309"
+  ];
+
+  function createState() {
+    return {
+      selected: [],
+      found: new Set(),
+      hinted: new Set(),
+      dragging: false,
+      dragMoved: false
+    };
+  }
 
   function keyOf(row, col) {
     return `${row},${col}`;
@@ -45,8 +64,8 @@
     return rowDelta <= 1 && colDelta <= 1 && rowDelta + colDelta > 0;
   }
 
-  function getLettersForPath(path) {
-    return path.map(([row, col]) => puzzle.grid[row][col]).join("");
+  function getLettersForPath(path, targetPuzzle = puzzle) {
+    return path.map(([row, col]) => targetPuzzle.grid[row][col]).join("");
   }
 
   function getSelectedWord() {
@@ -61,13 +80,137 @@
     return answer.display || answer.word;
   }
 
-  function validatePuzzle() {
-    if (!puzzle || !Array.isArray(puzzle.grid) || !Array.isArray(puzzle.answers)) {
+  function getAnswerColor(answer, index) {
+    return answer.color || fallbackColors[index % fallbackColors.length];
+  }
+
+  function getTextColorForBackground(hex) {
+    const normalizedHex = hex.replace("#", "");
+    const red = parseInt(normalizedHex.slice(0, 2), 16);
+    const green = parseInt(normalizedHex.slice(2, 4), 16);
+    const blue = parseInt(normalizedHex.slice(4, 6), 16);
+    const luminance = (0.299 * red + 0.587 * green + 0.114 * blue) / 255;
+    return luminance > 0.62 ? "#102629" : "#ffffff";
+  }
+
+  function isPuzzleSolved(index) {
+    return puzzleStates[index].found.size === puzzles[index].answers.length;
+  }
+
+  function isPuzzleUnlocked(index) {
+    if (index === 0) {
+      return true;
+    }
+
+    return puzzles.slice(0, index).every((_, previousIndex) => isPuzzleSolved(previousIndex));
+  }
+
+  function getClipConfig() {
+    return puzzle.clip || null;
+  }
+
+  function getClipCells() {
+    const clip = getClipConfig();
+
+    if (!clip) {
+      return [];
+    }
+
+    if (Array.isArray(clip.cells)) {
+      return clip.cells.map(([row, col]) => [Number(row), Number(col)]);
+    }
+
+    if (clip.row !== undefined && clip.col !== undefined) {
+      return [[Number(clip.row), Number(clip.col)]];
+    }
+
+    return [];
+  }
+
+  function isClipTriggerKey(key) {
+    return getClipCells().some(([row, col]) => key === keyOf(row, col));
+  }
+
+  function isClipTriggerCell(cell) {
+    return isClipTriggerKey(keyOf(Number(cell.dataset.row), Number(cell.dataset.col)));
+  }
+
+  function stopClipPlayback() {
+    if (!clipVideoEl) {
+      return;
+    }
+
+    clipVideoEl.pause();
+
+    try {
+      clipVideoEl.currentTime = 0;
+    } catch (error) {
+      // Some browsers block seeking before metadata is available.
+    }
+  }
+
+  function closeClipPopup() {
+    window.clearTimeout(clipTimer);
+    clipTimer = null;
+    stopClipPlayback();
+
+    if (!clipDialog) {
+      return;
+    }
+
+    if (clipDialog.open && typeof clipDialog.close === "function") {
+      clipDialog.close();
+    } else {
+      clipDialog.removeAttribute("open");
+    }
+  }
+
+  function showClipPopup() {
+    const clip = getClipConfig();
+
+    if (!clip || !clipDialog || !clipVideoEl) {
+      return;
+    }
+
+    window.clearTimeout(clipTimer);
+    state.dragging = false;
+    clearSelection("");
+
+    if (clipVideoEl.getAttribute("src") !== clip.src) {
+      clipVideoEl.setAttribute("src", clip.src);
+      clipVideoEl.load();
+    }
+
+    try {
+      clipVideoEl.currentTime = 0;
+    } catch (error) {
+      // The video will still start from the beginning after load.
+    }
+
+    if (!clipDialog.open) {
+      if (typeof clipDialog.showModal === "function") {
+        clipDialog.showModal();
+      } else {
+        clipDialog.setAttribute("open", "");
+      }
+    }
+
+    const playPromise = clipVideoEl.play();
+
+    if (playPromise && typeof playPromise.catch === "function") {
+      playPromise.catch(() => {});
+    }
+
+    clipTimer = window.setTimeout(closeClipPopup, Number(clip.durationMs) || 3000);
+  }
+
+  function validatePuzzle(targetPuzzle) {
+    if (!targetPuzzle || !Array.isArray(targetPuzzle.grid) || !Array.isArray(targetPuzzle.answers)) {
       throw new Error("Missing puzzle data.");
     }
 
-    const cols = puzzle.grid[0].length;
-    const invalidRow = puzzle.grid.some((row) => row.length !== cols);
+    const cols = targetPuzzle.grid[0].length;
+    const invalidRow = targetPuzzle.grid.some((row) => row.length !== cols);
 
     if (invalidRow) {
       throw new Error("Every puzzle grid row must be the same length.");
@@ -75,10 +218,10 @@
 
     const occupiedCells = new Map();
 
-    puzzle.answers.forEach((answer, answerIndex) => {
+    targetPuzzle.answers.forEach((answer) => {
       answer.normalizedWord = normalizeWord(answer.word);
 
-      if (getLettersForPath(answer.path) !== answer.normalizedWord) {
+      if (getLettersForPath(answer.path, targetPuzzle) !== answer.normalizedWord) {
         throw new Error(`Answer ${getDisplayWord(answer)} does not match its path in puzzle.js.`);
       }
 
@@ -90,24 +233,31 @@
         }
 
         occupiedCells.set(cellKey, getDisplayWord(answer));
-        answerByCell.set(cellKey, answerIndex);
       });
     });
   }
 
   function setHeaderText() {
-    document.title = puzzle.title || "Birthday Strands";
-    document.getElementById("title").textContent = puzzle.title || "Birthday Strands";
-    document.getElementById("recipient").textContent = puzzle.recipient || "For your friend";
-    document.getElementById("theme").textContent = puzzle.theme || "Make a wish";
-    document.getElementById("win-title").textContent = puzzle.winTitle || "Happy Birthday!";
-    document.getElementById("win-message").textContent = puzzle.winMessage || "You found every word.";
+    document.title = puzzleData.title || "Birthday Strands";
+    document.getElementById("title").textContent = puzzleData.title || "Birthday Strands";
+    document.getElementById("recipient").textContent = puzzleData.recipient || "For your friend";
+    document.getElementById("theme").textContent = puzzle.theme || puzzleData.theme || "Make a wish";
+    document.getElementById("win-title").textContent = puzzleData.winTitle || "Happy Birthday!";
+    document.getElementById("win-message").textContent = puzzleData.winMessage || "You found every word.";
   }
 
   function renderBoard() {
     boardEl.innerHTML = "";
+    cellsByKey.clear();
+    answerByCell.clear();
     boardEl.style.setProperty("--rows", puzzle.grid.length);
     boardEl.style.setProperty("--cols", puzzle.grid[0].length);
+
+    puzzle.answers.forEach((answer, answerIndex) => {
+      answer.path.forEach(([row, col]) => {
+        answerByCell.set(keyOf(row, col), answerIndex);
+      });
+    });
 
     puzzle.grid.forEach((rowLetters, row) => {
       rowLetters.split("").forEach((letter, col) => {
@@ -125,58 +275,179 @@
     });
   }
 
+  function renderLevelTabs() {
+    if (!levelTabsEl || puzzles.length < 2) {
+      return;
+    }
+
+    levelTabsEl.innerHTML = "";
+
+    puzzles.forEach((levelPuzzle, index) => {
+      const levelState = puzzleStates[index];
+      const isLocked = !isPuzzleUnlocked(index);
+      const button = document.createElement("button");
+      const foundCount = levelState.found.size;
+      const totalCount = levelPuzzle.answers.length;
+      button.type = "button";
+      button.className = "level-tab";
+      button.classList.toggle("is-active", index === activePuzzleIndex);
+      button.classList.toggle("is-locked", isLocked);
+      button.disabled = isLocked;
+      button.setAttribute("aria-pressed", String(index === activePuzzleIndex));
+      button.textContent = isLocked ?
+        `${levelPuzzle.label || `Level ${index + 1}`} Locked` :
+        `${levelPuzzle.label || `Level ${index + 1}`} ${foundCount}/${totalCount}`;
+      button.addEventListener("click", () => switchPuzzle(index));
+      levelTabsEl.append(button);
+    });
+  }
+
+  function switchPuzzle(index) {
+    if (index === activePuzzleIndex) {
+      return;
+    }
+
+    if (!isPuzzleUnlocked(index)) {
+      statusEl.textContent = "Finish Level 1 to unlock Level 2.";
+      return;
+    }
+
+    state.dragging = false;
+    activePuzzleIndex = index;
+    puzzle = puzzles[activePuzzleIndex];
+    state = puzzleStates[activePuzzleIndex];
+    state.selected = [];
+    statusEl.textContent = "";
+    setHeaderText();
+    renderBoard();
+    render();
+  }
+
   function renderAnswers() {
     answerListEl.innerHTML = "";
 
-    puzzle.answers.forEach((answer, index) => {
-      const item = document.createElement("li");
-      const isFound = state.found.has(index);
-      const isSpangram = answer.kind === "spangram";
-      item.classList.toggle("is-found", isFound);
-      item.classList.toggle("is-spangram", isSpangram);
-
-      const word = document.createElement("span");
-      word.className = "answer-word";
-
-      if (isFound) {
-        word.textContent = getDisplayWord(answer);
-      } else {
-        word.className = "answer-slots";
-        word.setAttribute("aria-label", `${answer.normalizedWord.length} letters`);
-
-        for (let i = 0; i < answer.normalizedWord.length; i += 1) {
-          const slot = document.createElement("span");
-          slot.className = "answer-slot";
-          word.append(slot);
-        }
+    getLevelGroups().forEach((group) => {
+      if (group.label) {
+        answerListEl.append(createLevelHeading(group));
       }
 
-      const tag = document.createElement("span");
-      tag.className = "answer-tag";
-      tag.textContent = isSpangram ? "Span" : `${answer.normalizedWord.length}`;
-
-      item.append(word, tag);
-      answerListEl.append(item);
+      group.items.forEach(({ answer, index }) => {
+        answerListEl.append(createAnswerItem(answer, index));
+      });
     });
+  }
+
+  function getLevelGroups() {
+    const levelLabels = puzzle.levelLabels || {};
+    const groupsByLevel = new Map();
+
+    puzzle.answers.forEach((answer, index) => {
+      const level = answer.level || 1;
+
+      if (!groupsByLevel.has(level)) {
+        groupsByLevel.set(level, []);
+      }
+
+      groupsByLevel.get(level).push({ answer, index });
+    });
+
+    return Array.from(groupsByLevel.entries())
+      .sort(([levelA], [levelB]) => Number(levelA) - Number(levelB))
+      .map(([level, items]) => ({
+        level,
+        label: levelLabels[level] || (groupsByLevel.size > 1 ? `Level ${level}` : ""),
+        items
+      }));
+  }
+
+  function createLevelHeading(group) {
+    const item = document.createElement("li");
+    const foundCount = group.items.filter(({ index }) => state.found.has(index)).length;
+    item.className = "level-heading";
+    item.setAttribute("aria-label", `${group.label}, ${foundCount} of ${group.items.length} found`);
+
+    const label = document.createElement("span");
+    label.textContent = group.label;
+
+    const count = document.createElement("strong");
+    count.textContent = `${foundCount}/${group.items.length}`;
+
+    item.append(label, count);
+    return item;
+  }
+
+  function createAnswerItem(answer, index) {
+    const item = document.createElement("li");
+    const isFound = state.found.has(index);
+    const isSpangram = answer.kind === "spangram";
+    const answerColor = getAnswerColor(answer, index);
+    item.classList.toggle("is-found", isFound);
+    item.classList.toggle("is-spangram", isSpangram);
+    item.style.setProperty("--answer-color", answerColor);
+
+    const swatch = document.createElement("span");
+    swatch.className = "answer-swatch";
+    swatch.setAttribute("aria-hidden", "true");
+
+    const word = document.createElement("span");
+    word.className = "answer-word";
+
+    if (isFound) {
+      word.textContent = getDisplayWord(answer);
+    } else {
+      word.className = "answer-slots";
+      word.setAttribute("aria-label", `${answer.normalizedWord.length} letters`);
+
+      for (let i = 0; i < answer.normalizedWord.length; i += 1) {
+        const slot = document.createElement("span");
+        slot.className = "answer-slot";
+        word.append(slot);
+      }
+    }
+
+    const tag = document.createElement("span");
+    tag.className = "answer-tag";
+    tag.textContent = isSpangram ? "Span" : `${answer.normalizedWord.length}`;
+
+    item.append(swatch, word, tag);
+    return item;
   }
 
   function renderCells() {
     cellsByKey.forEach((cell, key) => {
       const answerIndex = answerByCell.get(key);
       const isFiller = answerIndex === undefined;
+      const isClipTrigger = isClipTriggerKey(key);
+      const answer = isFiller ? null : puzzle.answers[answerIndex];
       const isFound = state.found.has(answerIndex);
-      const isSpangram = isFound && puzzle.answers[answerIndex].kind === "spangram";
+      const isSpangram = isFound && answer.kind === "spangram";
       const isSelected = state.selected.some(([row, col]) => keyOf(row, col) === key);
       const isHinted = Array.from(state.hinted).some((hintedIndex) => {
         return puzzle.answers[hintedIndex].path.some(([row, col]) => keyOf(row, col) === key);
       });
 
-      cell.classList.toggle("filler", isFiller);
+      if (answer) {
+        const answerColor = getAnswerColor(answer, answerIndex);
+        cell.style.setProperty("--answer-color", answerColor);
+        cell.style.setProperty("--answer-text-color", getTextColorForBackground(answerColor));
+      } else {
+        cell.style.removeProperty("--answer-color");
+        cell.style.removeProperty("--answer-text-color");
+      }
+
       cell.classList.toggle("found", isFound && !isSpangram);
       cell.classList.toggle("spangram", isSpangram);
       cell.classList.toggle("selected", isSelected);
+      cell.classList.toggle("answer-colored", colorModeEnabled && isSelected && !isFiller);
       cell.classList.toggle("hinted", isHinted);
-      cell.disabled = isFound || isFiller;
+      cell.classList.toggle("clip-trigger", Boolean(isClipTrigger));
+      if (isClipTrigger) {
+        const rowNumber = Number(cell.dataset.row) + 1;
+        const colNumber = Number(cell.dataset.col) + 1;
+        cell.setAttribute("aria-label", `Row ${rowNumber}, column ${colNumber}, ${cell.textContent}, play birthday clip`);
+      }
+      cell.classList.toggle("filler", isFiller && !isClipTrigger);
+      cell.disabled = isFound || (isFiller && !isClipTrigger);
     });
   }
 
@@ -200,6 +471,7 @@
     renderAnswers();
     renderProgress();
     renderSelection();
+    renderLevelTabs();
   }
 
   function clearSelection(message) {
@@ -337,6 +609,27 @@
   }
 
   function showWin() {
+    const allSolved = puzzles.every((_, index) => isPuzzleSolved(index));
+    const nextPuzzleIndex = puzzles.findIndex((_, index) => index > activePuzzleIndex && isPuzzleUnlocked(index));
+    winDialog.classList.toggle("is-final", allSolved);
+    delete winDialog.dataset.nextPuzzleIndex;
+
+    if (allSolved) {
+      document.getElementById("win-title").textContent = puzzleData.winTitle || "Happy Birthday!";
+      document.getElementById("win-message").textContent = puzzleData.winMessage || "You solved every level.";
+      winActionEl.textContent = "Done";
+    } else if (nextPuzzleIndex !== -1) {
+      document.getElementById("win-title").textContent = "Key Found";
+      document.getElementById("win-message").textContent = "Puzzle 2 is unlocked.";
+      winActionEl.textContent = "Open Level 2";
+      winDialog.dataset.nextPuzzleIndex = String(nextPuzzleIndex);
+    } else {
+      document.getElementById("win-title").textContent = `${puzzle.label || "Level"} solved`;
+      document.getElementById("win-message").textContent = "Move to the next level.";
+      winActionEl.textContent = "Done";
+    }
+
+    renderLevelTabs();
     startConfetti();
 
     if (typeof winDialog.showModal === "function") {
@@ -394,10 +687,21 @@
   }
 
   function bindEvents() {
+    boardEl.addEventListener("click", (event) => {
+      const cell = event.target.closest(".cell");
+
+      if (!cell || !isClipTriggerCell(cell)) {
+        return;
+      }
+
+      event.preventDefault();
+      showClipPopup();
+    });
+
     boardEl.addEventListener("pointerdown", (event) => {
       const cell = event.target.closest(".cell");
 
-      if (!cell || cell.disabled) {
+      if (!cell || isClipTriggerCell(cell) || cell.disabled) {
         return;
       }
 
@@ -416,7 +720,7 @@
       const element = document.elementFromPoint(event.clientX, event.clientY);
       const cell = element ? element.closest(".cell") : null;
 
-      if (!cell || !boardEl.contains(cell) || cell.disabled) {
+      if (!cell || !boardEl.contains(cell) || isClipTriggerCell(cell) || cell.disabled) {
         return;
       }
 
@@ -445,11 +749,32 @@
     document.getElementById("clear-selection").addEventListener("click", () => clearSelection(""));
     document.getElementById("hint-button").addEventListener("click", showHint);
     document.getElementById("reset-button").addEventListener("click", resetGame);
+    winActionEl.addEventListener("click", () => {
+      const nextPuzzleIndex = Number(winDialog.dataset.nextPuzzleIndex);
+
+      if (Number.isInteger(nextPuzzleIndex)) {
+        window.setTimeout(() => switchPuzzle(nextPuzzleIndex), 0);
+      }
+    });
+    if (clipDialog) {
+      clipDialog.addEventListener("close", () => {
+        window.clearTimeout(clipTimer);
+        clipTimer = null;
+        stopClipPlayback();
+      });
+    }
+    if (colorModeToggleEl) {
+      colorModeToggleEl.addEventListener("change", () => {
+        colorModeEnabled = colorModeToggleEl.checked;
+        document.body.classList.toggle("color-mode", colorModeEnabled);
+        render();
+      });
+    }
     window.addEventListener("resize", resizeConfettiCanvas);
   }
 
   function init() {
-    validatePuzzle();
+    puzzles.forEach(validatePuzzle);
     setHeaderText();
     renderBoard();
     bindEvents();

@@ -28,6 +28,8 @@
         </div>
       </header>
 
+      <nav id="level-tabs" class="level-tabs" aria-label="Puzzle levels"></nav>
+
       <section class="game-layout" aria-label="Birthday Strands game">
         <section class="board-tool" aria-label="Letter board">
           <div class="score-row">
@@ -57,7 +59,13 @@
         <aside class="side-panel" aria-label="Puzzle progress">
           <div class="side-heading">
             <h2>Words</h2>
-            <button id="hint-button" type="button">Hint</button>
+            <div class="side-controls">
+              <label class="color-toggle">
+                <input id="color-mode-toggle" type="checkbox">
+                <span>Color mode</span>
+              </label>
+              <button id="hint-button" type="button">Hint</button>
+            </div>
           </div>
 
           <ol id="answer-list" class="answer-list"></ol>
@@ -72,10 +80,15 @@
     <dialog id="win-dialog" class="win-dialog">
       <form method="dialog">
         <p class="win-kicker">Solved</p>
+        <img id="final-art" class="final-art" src="assets/cat-trumpets.svg" alt="" aria-hidden="true">
         <h2 id="win-title">Happy Birthday!</h2>
         <p id="win-message">You found every word.</p>
-        <button type="submit" class="primary">Done</button>
+        <button id="win-action" type="submit" class="primary">Done</button>
       </form>
+    </dialog>
+
+    <dialog id="clip-dialog" class="clip-dialog" aria-label="Birthday clip">
+      <video id="clip-video" class="clip-video" playsinline preload="metadata"></video>
     </dialog>
 
     <script src="puzzle.js"></script>

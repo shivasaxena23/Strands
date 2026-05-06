@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="cats playing trumpets">
+  <rect width="640" height="360" rx="28" fill="#fff7df"/>
+  <path d="M48 284C126 250 196 278 276 254C356 231 421 248 492 226C555 207 599 219 640 204V360H48Z" fill="#5a9b67"/>
+  <path d="M0 299C92 266 174 306 264 282C357 256 433 282 528 252C577 237 612 238 640 233V360H0Z" fill="#8abf7a"/>
+  <g transform="translate(98 82)">
+    <path d="M68 32L90 0L104 42Z" fill="#f4c18a" stroke="#102629" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M152 32L178 0L184 45Z" fill="#f4c18a" stroke="#102629" stroke-width="5" stroke-linejoin="round"/>
+    <circle cx="126" cy="78" r="72" fill="#f4c18a" stroke="#102629" stroke-width="6"/>
+    <circle cx="100" cy="68" r="8" fill="#102629"/>
+    <circle cx="152" cy="68" r="8" fill="#102629"/>
+    <path d="M122 86L130 86L126 93Z" fill="#db2777"/>
+    <path d="M126 93C118 104 107 104 100 96M126 93C134 104 145 104 152 96" fill="none" stroke="#102629" stroke-width="4" stroke-linecap="round"/>
+    <path d="M78 160C98 141 155 141 176 160V254H78Z" fill="#fffdf8" stroke="#102629" stroke-width="6"/>
+    <path d="M74 184C44 176 25 149 21 119" fill="none" stroke="#102629" stroke-width="12" stroke-linecap="round"/>
+    <path d="M178 188L298 145" fill="none" stroke="#d97706" stroke-width="16" stroke-linecap="round"/>
+    <path d="M286 126L358 100V190L286 164Z" fill="#f7c948" stroke="#102629" stroke-width="6" stroke-linejoin="round"/>
+    <circle cx="182" cy="186" r="13" fill="#f7c948" stroke="#102629" stroke-width="5"/>
+  </g>
+  <g transform="translate(360 96)">
+    <path d="M54 40L72 8L91 47Z" fill="#d8a064" stroke="#102629" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M137 38L168 10L166 56Z" fill="#d8a064" stroke="#102629" stroke-width="5" stroke-linejoin="round"/>
+    <circle cx="110" cy="85" r="64" fill="#d8a064" stroke="#102629" stroke-width="6"/>
+    <circle cx="88" cy="78" r="7" fill="#102629"/>
+    <circle cx="134" cy="78" r="7" fill="#102629"/>
+    <path d="M106 96L114 96L110 103Z" fill="#db2777"/>
+    <path d="M110 103C101 112 92 112 85 105M110 103C119 112 128 112 135 105" fill="none" stroke="#102629" stroke-width="4" stroke-linecap="round"/>
+    <path d="M66 156C85 141 134 141 154 156V244H66Z" fill="#fffdf8" stroke="#102629" stroke-width="6"/>
+    <path d="M64 184C34 188 13 170 4 143" fill="none" stroke="#102629" stroke-width="12" stroke-linecap="round"/>
+    <path d="M154 184L50 139" fill="none" stroke="#d97706" stroke-width="15" stroke-linecap="round"/>
+    <path d="M53 120L-20 91V178L53 157Z" fill="#f7c948" stroke="#102629" stroke-width="6" stroke-linejoin="round"/>
+    <circle cx="151" cy="183" r="12" fill="#f7c948" stroke="#102629" stroke-width="5"/>
+  </g>
+  <g fill="#f7c948" stroke="#102629" stroke-width="4">
+    <path d="M283 75L292 101L320 101L297 117L306 143L283 127L260 143L269 117L246 101L274 101Z"/>
+    <path d="M514 38L521 58L542 58L525 70L532 91L514 79L496 91L503 70L486 58L507 58Z"/>
+    <path d="M75 38L82 58L103 58L86 70L93 91L75 79L57 91L64 70L47 58L68 58Z"/>
+  </g>
+  <text x="320" y="330" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="38" font-weight="900" fill="#102629">Happy Birthday!</text>
+</svg>

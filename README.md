@@ -12,21 +12,25 @@ Edit `puzzle.js`.
 - `recipient`: short dedication line.
 - `theme`: the puzzle theme.
 - `winTitle` and `winMessage`: shown after every word is found.
-- `grid`: the visible letter board.
-- `answers`: the hidden words and the board path for each word.
+- `puzzles`: the separate playable levels.
+- each puzzle's `label`, `theme`, `grid`, and `answers`: the visible board and hidden answers for that level.
+- each answer can include a `color` hex value used by Color mode and the answer-key images.
+- a puzzle can include `clip` with `cells`, `src`, and `durationMs` to make one or more tiles play a short popup video.
+- each puzzle's `spangram` answer should connect two opposite grid edges.
+- Level 2 stays locked until Level 1 is solved.
 
 Each answer path is a list of `[row, column]` cells, starting from zero. The letters at those cells must spell the answer exactly.
 Do not reuse a cell across two answers.
-This puzzle has one disabled filler tile because the exact answer-letter total is one short of a practical rectangle.
+Level 1 has two video-trigger filler tiles. Level 2 has no filler tiles.
 
 For example, this path reads across the first row:
 
 ```js
 {
-  word: "Saying Things",
-  kind: "spangram",
-  path: [[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7], [0, 8], [0, 9], [0, 10], [0, 11]]
+  "word": "Atonement",
+  "color": "#9f1239",
+  "path": [[0, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7], [1, 7]]
 }
 ```
 
-The current puzzle uses only the custom phrase list in `puzzle.js`.
+The current puzzles use only the custom phrase list in `puzzle.js`.
